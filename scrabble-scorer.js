@@ -33,26 +33,84 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble! Enter a word:");
+   console.log("Let's play some scrabble!\n");
+   let myWord = input.question(`Enter a word to score: `);
+   return myWord;
 };
 
-let simpleScorer;
+let simpleScorer = function(someWord) {
+   score =  someWord.length;
+   return score;
+};
 
-let vowelBonusScorer;
+let vowelBonusScorer = function(someWord) {
+   let score = 0;
+   let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+   
+   for (let i = 0; i < someWord.length; i++) {
+      if (vowels.includes(someWord[i].toLowerCase())) {
+         score += 3;
+      } else {
+         score += 1;
+      }
+   }
+   return score;
+};
 
-let scrabbleScorer;
+let scrabbleScorer = function(someWord) {
+   let score = 0;
+   for (let i=0; i<someWord.length; i++) {
+      score += newPointStructure[someWord[i].toLowerCase()]
+   }
+   return score;
+};
 
-const scoringAlgorithms = [];
+let simpleScore = {
+   name: "Simple Score",
+   description: "Each letter is worth 1 point.",
+   scoringFunction: simpleScorer
+};
 
-function scorerPrompt() {}
+let vowelBonusScore = {
+   name: "Bonus Vowels",
+   description: "Vowels are 3 pts, consonants are 1 pt.",
+   scoringFunction: vowelBonusScorer
+};
 
-function transform() {};
+let oldScrabbleScore = {
+   name: "Scrabble",
+   description: "The traditional scoring algorithm.",
+   scoringFunction: scrabbleScorer
+};
 
-let newPointStructure;
+const scoringAlgorithms = [simpleScore, vowelBonusScore, oldScrabbleScore]
+//simpleScorer, vowelBonusScore, and oldScrabbleScore are all initalized as aliases to anonymous functions - can they also then be declared as objects?? 
+
+function scorerPrompt(someArray) {
+   let response = -1;
+   while (response < 0 || response > 2) {
+      response = input.question(`Which scoring algorithm would you like to use?\n\n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: `)
+   }
+   return someArray[response]
+};
+
+function transform(someObject) {
+   let newObject = {};
+   for (pointValue in someObject) {
+      for (let i=0; i<someObject[pointValue].length; i++) {
+         newObject[someObject[pointValue][i].toLowerCase()] = Number(pointValue);
+      }
+   }
+   return newObject 
+};
+
+let newPointStructure = transform(oldPointStructure);
 
 function runProgram() {
-   initialPrompt();
-   
+   userWord = initialPrompt();
+   console.log(`the word entered is ${userWord}`)
+   //console.log(scorerPrompt(scoringAlgorithms).scoringFunction(userWord))
+   console.log(`Score for '${userWord}': ${scorerPrompt(scoringAlgorithms).scoringFunction(userWord)}`);
 }
 
 // Don't write any code below this line //
