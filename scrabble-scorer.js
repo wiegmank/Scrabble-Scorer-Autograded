@@ -110,7 +110,7 @@ function runProgram() {
    userWord = initialPrompt();
    console.log(`the word entered is ${userWord}`)
    //console.log(scorerPrompt(scoringAlgorithms).scoringFunction(userWord))
-   console.log(`Score for '${userWord}': ${scorerPrompt(scoringAlgorithms).scoringFunction(userWord)}`);
+   console.log(`Score for '${userWord}': ${scorerPrompt(scoringAlgorithms).scorerFunction(userWord)}`);
 }
 
 // Don't write any code below this line //
